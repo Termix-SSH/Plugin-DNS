@@ -1,0 +1,90 @@
+<div align="center">
+
+<img src="https://termix.site/img/logo.svg" width="120" alt="Termix Logo" />
+
+<h1>DNS</h1>
+
+<p>Manage DNS records and domains across Cloudflare, Route 53, Namecheap and other providers</p>
+
+</div>
+
+<br />
+
+## Overview
+
+DNS puts the records and domains you keep at different providers in one tab. Edit records, see when each domain expires, keep a record pointed at a host, and check that your zones are healthy.
+
+Read the [docs](https://docs.termix.site/plugins/dns) to set it up and use it.
+
+<br />
+
+## Features
+
+- Works with Cloudflare, Route 53, DigitalOcean, Hetzner, Namecheap, GoDaddy, Porkbun and Gandi
+- Add, change and delete records for every provider in the same way
+- Domain list with expiry dates, auto renew, transfer lock and name servers, plus alerts before a domain expires
+- Watch any domain by name, even ones you did not register through a connected provider
+- Keep a record pointed at a host or at this server's public address
+- Health checks for name servers, DNSSEC, SPF, DMARC and broken CNAMEs, and a check against public resolvers
+- Copies of every zone with compare and restore, BIND file import and export, and an alert when a zone changes outside Termix
+- A DNS service other plugins can use for certificate challenges
+
+<br />
+
+## Sponsors
+
+For a paid sponsor spot, email [mail@termix.site](mailto:mail@termix.site).
+
+<!-- SPONSORS:START -->
+
+<div align="center">
+
+<br />
+
+<a href="https://www.blacksmith.sh/">
+  <img src="https://termix.site/img/sponsors/blacksmith.svg" height="40" alt="Blacksmith" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://www.cloudflare.com/">
+  <img src="https://termix.site/img/sponsors/cloudflare.png" height="40" alt="Cloudflare" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://akamai.com/">
+  <img src="https://termix.site/img/sponsors/akamai.svg" height="40" alt="Akamai" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://aws.amazon.com/">
+  <img src="https://termix.site/img/sponsors/aws.png" height="40" alt="AWS" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://rackgenius.com/">
+  <img src="https://termix.site/img/sponsors/rackgenius.png" height="40" alt="Rack Genius" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://ginernet.com/">
+  <img src="https://termix.site/img/sponsors/ginernet.png" height="40" alt="Ginernet" />
+</a>
+&nbsp;&nbsp;&nbsp;
+<a href="https://www.hetzner.com/?mtm_campaign=termix&mtm_medium=referral&mtm_content=sponsoring_link">
+  <img src="https://termix.site/img/sponsors/hetzner.png" height="40" alt="Hetzner" />
+</a>
+
+</div>
+
+<!-- SPONSORS:END -->
+
+<br />
+
+## Support
+
+Bugs and ideas for DNS go in this repo: [report a bug](https://github.com/Termix-SSH/Plugin-DNS/issues/new?template=bug_report.yml) or [request a feature](https://github.com/Termix-SSH/Plugin-DNS/issues/new?template=feature_request.yml). Report an issue on the plugin's page in the Plugins tab fills in your versions for you.
+
+Problems with Termix itself (login, hosts, credentials, sharing, sync) go in the [Termix repo](https://github.com/Termix-SSH/Termix/issues/new/choose). Not sure where it goes? Open it there and it will be moved.
+
+Add as much detail as you can, in English if possible. For questions, join the [Discord](https://discord.gg/jVQGdvHDrf) server.
+
+<br />
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE).

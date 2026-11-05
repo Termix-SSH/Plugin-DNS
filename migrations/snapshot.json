@@ -1,0 +1,264 @@
+{
+  "version": 1,
+  "tables": {
+    "accounts": {
+      "columns": {
+        "id": {
+          "type": "id",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "createdBy": {
+          "type": "refUser",
+          "length": 255,
+          "notNull": true
+        },
+        "provider": {
+          "type": "varchar",
+          "length": 16,
+          "notNull": true
+        },
+        "name": {
+          "type": "varchar",
+          "length": 100,
+          "notNull": true
+        },
+        "credentials": {
+          "type": "text",
+          "notNull": true
+        },
+        "status": {
+          "type": "varchar",
+          "length": 8,
+          "notNull": true
+        },
+        "lastError": {
+          "type": "text"
+        },
+        "lastSyncAt": {
+          "type": "timestamp"
+        },
+        "autoBackup": {
+          "type": "boolean",
+          "notNull": true,
+          "defaultValue": true
+        },
+        "checkHealth": {
+          "type": "boolean",
+          "notNull": true,
+          "defaultValue": true
+        },
+        "createdAt": {
+          "type": "timestamp",
+          "notNull": true,
+          "defaultNow": true
+        }
+      },
+      "indexes": [
+        {
+          "name": "uq_p_dns_accounts_name",
+          "columns": [
+            "name"
+          ],
+          "unique": true
+        }
+      ]
+    },
+    "snapshots": {
+      "columns": {
+        "id": {
+          "type": "id",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "accountId": {
+          "type": "integer",
+          "notNull": true
+        },
+        "zoneId": {
+          "type": "varchar",
+          "length": 255,
+          "notNull": true
+        },
+        "zoneName": {
+          "type": "varchar",
+          "length": 255,
+          "notNull": true
+        },
+        "label": {
+          "type": "varchar",
+          "length": 100,
+          "notNull": true
+        },
+        "source": {
+          "type": "varchar",
+          "length": 8,
+          "notNull": true
+        },
+        "recordCount": {
+          "type": "integer",
+          "notNull": true
+        },
+        "data": {
+          "type": "text",
+          "notNull": true
+        },
+        "createdAt": {
+          "type": "timestamp",
+          "notNull": true,
+          "defaultNow": true
+        }
+      },
+      "indexes": [
+        {
+          "name": "idx_p_dns_snapshots_zone",
+          "columns": [
+            "accountId",
+            "zoneId"
+          ]
+        }
+      ]
+    },
+    "domains": {
+      "columns": {
+        "id": {
+          "type": "id",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "accountId": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "varchar",
+          "length": 255,
+          "notNull": true
+        },
+        "registrar": {
+          "type": "varchar",
+          "length": 100
+        },
+        "expiresAt": {
+          "type": "timestamp"
+        },
+        "autoRenew": {
+          "type": "boolean"
+        },
+        "locked": {
+          "type": "boolean"
+        },
+        "nameservers": {
+          "type": "text"
+        },
+        "status": {
+          "type": "varchar",
+          "length": 100
+        },
+        "source": {
+          "type": "varchar",
+          "length": 8,
+          "notNull": true
+        },
+        "checkedAt": {
+          "type": "timestamp"
+        }
+      },
+      "indexes": [
+        {
+          "name": "uq_p_dns_domains_name",
+          "columns": [
+            "name"
+          ],
+          "unique": true
+        }
+      ]
+    },
+    "links": {
+      "columns": {
+        "id": {
+          "type": "id",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "createdBy": {
+          "type": "refUser",
+          "length": 255,
+          "notNull": true
+        },
+        "accountId": {
+          "type": "integer",
+          "notNull": true
+        },
+        "zoneId": {
+          "type": "varchar",
+          "length": 255,
+          "notNull": true
+        },
+        "zoneName": {
+          "type": "varchar",
+          "length": 255,
+          "notNull": true
+        },
+        "name": {
+          "type": "varchar",
+          "length": 255,
+          "notNull": true
+        },
+        "type": {
+          "type": "varchar",
+          "length": 4,
+          "notNull": true
+        },
+        "source": {
+          "type": "varchar",
+          "length": 8,
+          "notNull": true
+        },
+        "hostId": {
+          "type": "integer"
+        },
+        "ttl": {
+          "type": "integer",
+          "notNull": true
+        },
+        "proxied": {
+          "type": "boolean",
+          "notNull": true,
+          "defaultValue": false
+        },
+        "enabled": {
+          "type": "boolean",
+          "notNull": true,
+          "defaultValue": true
+        },
+        "lastValue": {
+          "type": "varchar",
+          "length": 64
+        },
+        "lastSyncAt": {
+          "type": "timestamp"
+        },
+        "lastError": {
+          "type": "text"
+        },
+        "createdAt": {
+          "type": "timestamp",
+          "notNull": true,
+          "defaultNow": true
+        }
+      },
+      "indexes": [
+        {
+          "name": "uq_p_dns_links_target",
+          "columns": [
+            "accountId",
+            "zoneId",
+            "name",
+            "type"
+          ],
+          "unique": true
+        }
+      ]
+    }
+  }
+}
