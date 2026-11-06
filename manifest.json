@@ -91,7 +91,11 @@
           "scope": "server",
           "risk": "read",
           "permission": "view",
-          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
         },
         {
           "id": "dns.list-records",
@@ -108,7 +112,11 @@
               "optionsFrom": "dns.list-zones"
             }
           ],
-          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
         },
         {
           "id": "dns.list-domains",
@@ -116,7 +124,11 @@
           "scope": "server",
           "risk": "read",
           "permission": "view",
-          "surfaces": { "assistant": true, "mcp": true, "palette": false }
+          "surfaces": {
+            "assistant": true,
+            "mcp": true,
+            "palette": false
+          }
         },
         {
           "id": "dns.check-zone",
@@ -134,7 +146,10 @@
               "optionsFrom": "dns.list-zones"
             }
           ],
-          "surfaces": { "assistant": true, "mcp": true }
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
         },
         {
           "id": "dns.upsert-record",
@@ -159,10 +174,22 @@
               "required": true,
               "default": "A",
               "options": [
-                { "value": "A", "labelKey": "operations.typeA" },
-                { "value": "AAAA", "labelKey": "operations.typeAAAA" },
-                { "value": "CNAME", "labelKey": "operations.typeCNAME" },
-                { "value": "TXT", "labelKey": "operations.typeTXT" }
+                {
+                  "value": "A",
+                  "labelKey": "operations.typeA"
+                },
+                {
+                  "value": "AAAA",
+                  "labelKey": "operations.typeAAAA"
+                },
+                {
+                  "value": "CNAME",
+                  "labelKey": "operations.typeCNAME"
+                },
+                {
+                  "value": "TXT",
+                  "labelKey": "operations.typeTXT"
+                }
               ]
             },
             {
@@ -184,7 +211,10 @@
               "required": false
             }
           ],
-          "surfaces": { "assistant": true, "mcp": true }
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
         },
         {
           "id": "dns.delete-record",
@@ -221,7 +251,10 @@
               "required": false
             }
           ],
-          "surfaces": { "assistant": true, "mcp": true }
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
         },
         {
           "id": "dns.snapshot-zone",
@@ -246,7 +279,10 @@
               "required": false
             }
           ],
-          "surfaces": { "assistant": true, "mcp": true }
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
         },
         {
           "id": "dns.sync-links",
@@ -256,7 +292,10 @@
           "risk": "change",
           "permission": "edit",
           "dryRun": "describe",
-          "surfaces": { "assistant": true, "mcp": true }
+          "surfaces": {
+            "assistant": true,
+            "mcp": true
+          }
         }
       ],
       "signals": [
@@ -269,7 +308,8 @@
           "refreshSec": 3600
         }
       ]
-    }
+    },
+    "uses": ["homepage.widgets"]
   },
   "locales": "locales",
   "platforms": ["linux", "win32", "darwin"]

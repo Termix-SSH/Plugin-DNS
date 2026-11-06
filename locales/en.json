@@ -305,5 +305,13 @@
       "ok": "CAA records limit who can issue certificates.",
       "none": "There are no CAA records. Any certificate authority can issue certificates."
     }
+  },
+  "widget": {
+    "name": "DNS",
+    "description": "Domains, expiring domains and failing records.",
+    "domains": "Domains",
+    "expiring": "Expiring soon",
+    "failingLinks": "Failing links",
+    "failingAccounts": "Failing logins"
   }
 }
