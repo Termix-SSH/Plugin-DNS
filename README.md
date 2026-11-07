@@ -28,6 +28,7 @@ Read the [docs](https://docs.termix.site/plugins/dns) to set it up and use it.
 - Health checks for name servers, DNSSEC, SPF, DMARC and broken CNAMEs, and a check against public resolvers
 - Copies of every zone with compare and restore, BIND file import and export, and an alert when a zone changes outside Termix
 - A DNS service other plugins can use for certificate challenges
+- A dashboard card with domains close to expiry
 
 <br />
 
