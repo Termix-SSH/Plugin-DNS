@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { dnsWidget } from "./HomepageWidget";
 import { Globe, KeyRound, Pencil, Plug, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -399,6 +400,8 @@ export function activate(app: TermixApp): void {
     singleton: true,
     hostless: true,
   });
+  app.registerExtension("homepage.widgets", dnsWidget(app.t));
+
   app.registerDashboardCard({
     id: "dns-domains",
     titleKey: "card.title",

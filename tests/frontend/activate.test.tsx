@@ -103,3 +103,12 @@ describe("format", () => {
     expect(levelTone("info")).toBe("idle");
   });
 });
+
+describe("homepage widget", () => {
+  it("is offered to the homepage", async () => {
+    rendered = await renderWithApp(plugin, { manifest, locales });
+    expect(rendered.registered.extensions("homepage.widgets")).toEqual([
+      "dns_summary",
+    ]);
+  });
+});
