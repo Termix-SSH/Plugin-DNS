@@ -6,6 +6,12 @@
 
 <p>Manage DNS records and domains across Cloudflare, Route 53, Namecheap and other providers</p>
 
+<!-- VIDEO:START -->
+
+<a href="https://www.youtube.com/watch?v=ujcN58s2Buw"><img src="https://img.shields.io/badge/Watch_the_demo-f59145?style=for-the-badge&logo=youtube&logoColor=white" alt="Watch the demo on YouTube" /></a>
+
+<!-- VIDEO:END -->
+
 </div>
 
 <br />
