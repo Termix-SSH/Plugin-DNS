@@ -1,0 +1,171 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Termix-SSH/Termix/main/scripts/authz/authz.schema.json",
+  "seed": [
+    {
+      "as": "admin",
+      "method": "POST",
+      "path": "/plugin-api/dns/accounts",
+      "body": {
+        "provider": "cloudflare",
+        "name": "authz-own-dns",
+        "credentials": {
+          "apiToken": "authz-token"
+        }
+      },
+      "capture": {
+        "dns.accounts": "id"
+      }
+    }
+  ],
+  "routes": {
+    "GET /plugin-api/dns/accounts": {
+      "access": "user",
+      "permission": "dns.view"
+    },
+    "POST /plugin-api/dns/accounts": {
+      "access": "user"
+    },
+    "GET /plugin-api/dns/accounts/:accountId/zones/:zoneId/export": {
+      "access": "user",
+      "permission": "dns.view",
+      "allowed": "any",
+      "note": "No live zone in the test data"
+    },
+    "GET /plugin-api/dns/accounts/:accountId/zones/:zoneId/health": {
+      "access": "user",
+      "permission": "dns.view"
+    },
+    "POST /plugin-api/dns/accounts/:accountId/zones/:zoneId/health": {
+      "access": "user"
+    },
+    "POST /plugin-api/dns/accounts/:accountId/zones/:zoneId/import": {
+      "access": "user",
+      "resource": {
+        "kind": "own",
+        "fixture": "dns.accounts"
+      },
+      "params": {
+        "accountId": "dns.accounts"
+      }
+    },
+    "POST /plugin-api/dns/accounts/:accountId/zones/:zoneId/propagation": {
+      "access": "user"
+    },
+    "GET /plugin-api/dns/accounts/:accountId/zones/:zoneId/records": {
+      "access": "user",
+      "permission": "dns.view",
+      "allowed": "any",
+      "note": "No live zone in the test data"
+    },
+    "POST /plugin-api/dns/accounts/:accountId/zones/:zoneId/records": {
+      "access": "user"
+    },
+    "DELETE /plugin-api/dns/accounts/:accountId/zones/:zoneId/records/:recordId": {
+      "access": "user",
+      "destructive": true
+    },
+    "PUT /plugin-api/dns/accounts/:accountId/zones/:zoneId/records/:recordId": {
+      "access": "user"
+    },
+    "GET /plugin-api/dns/accounts/:accountId/zones/:zoneId/snapshots": {
+      "access": "user",
+      "resource": {
+        "kind": "own",
+        "fixture": "dns.accounts"
+      },
+      "params": {
+        "accountId": "dns.accounts"
+      },
+      "filtered": true,
+      "note": "Lists only what the caller may see"
+    },
+    "POST /plugin-api/dns/accounts/:accountId/zones/:zoneId/snapshots": {
+      "access": "user"
+    },
+    "DELETE /plugin-api/dns/accounts/:id": {
+      "access": "user",
+      "destructive": true
+    },
+    "PUT /plugin-api/dns/accounts/:id": {
+      "access": "user"
+    },
+    "POST /plugin-api/dns/accounts/:id/test": {
+      "access": "user"
+    },
+    "GET /plugin-api/dns/domains": {
+      "access": "user",
+      "permission": "dns.view"
+    },
+    "POST /plugin-api/dns/domains": {
+      "access": "user"
+    },
+    "DELETE /plugin-api/dns/domains/:id": {
+      "access": "user",
+      "destructive": true
+    },
+    "POST /plugin-api/dns/domains/refresh": {
+      "access": "user"
+    },
+    "GET /plugin-api/dns/hosts": {
+      "access": "user",
+      "permission": "dns.manage"
+    },
+    "GET /plugin-api/dns/links": {
+      "access": "user",
+      "permission": "dns.view"
+    },
+    "POST /plugin-api/dns/links": {
+      "access": "user",
+      "resource": {
+        "kind": "host",
+        "min": "connect",
+        "key": "hostId"
+      }
+    },
+    "DELETE /plugin-api/dns/links/:id": {
+      "access": "user",
+      "destructive": true
+    },
+    "PUT /plugin-api/dns/links/:id": {
+      "access": "user",
+      "resource": {
+        "kind": "own",
+        "fixture": "dns.links"
+      },
+      "params": {
+        "id": "=authz-none"
+      },
+      "allowed": "any",
+      "note": "No links in the test data (needs a live zone); only session, permission and unknown id refusals are checked"
+    },
+    "POST /plugin-api/dns/links/:id/sync": {
+      "access": "user"
+    },
+    "GET /plugin-api/dns/providers": {
+      "access": "user",
+      "permission": "dns.view"
+    },
+    "DELETE /plugin-api/dns/snapshots/:id": {
+      "access": "user",
+      "destructive": true
+    },
+    "GET /plugin-api/dns/snapshots/:id/diff": {
+      "access": "user",
+      "permission": "dns.view",
+      "allowed": "any",
+      "note": "No live zone in the test data"
+    },
+    "POST /plugin-api/dns/snapshots/:id/restore": {
+      "access": "user",
+      "destructive": true
+    },
+    "GET /plugin-api/dns/summary": {
+      "access": "user",
+      "permission": "dns.view"
+    },
+    "GET /plugin-api/dns/zones": {
+      "access": "user",
+      "permission": "dns.view"
+    }
+  }
+}
