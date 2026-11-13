@@ -106,6 +106,7 @@ async function setup(permissions: string[]) {
     .run("user-1", "user-1");
   let routes: Router | null = null;
   mock = createMockCtx({
+    sandbox: true,
     pluginId: manifest.id,
     manifest,
     capabilities: manifest.capabilities,
@@ -125,7 +126,23 @@ async function setup(permissions: string[]) {
         folder: null,
         authType: "password",
       },
+      {
+        id: 6,
+        userId: "user-1",
+        name: "lan",
+        ip: "web.lan",
+        port: 22,
+        username: "root",
+        tags: null,
+        folder: null,
+        authType: "password",
+      },
     ],
+  });
+  // Drop this once the lock moves to SDK 2.2.2, which takes a resolve option.
+  Object.assign(mock.ctx.network, {
+    lookup: async (name: string, options?: { family?: 4 | 6 }) =>
+      name === "web.lan" && options?.family === 4 ? "192.0.2.44" : null,
   });
   await activate(mock.ctx);
 
@@ -482,6 +499,36 @@ describe("links", () => {
     expect(dupe.status).toBe(409);
   });
 
+  it("looks up a host that has a name instead of an address", async () => {
+    await addAccount();
+    const link = {
+      accountId: 1,
+      zoneId: "z1",
+      zoneName: "example.com",
+      name: "lan",
+      type: "A",
+      source: "host",
+      hostId: 6,
+      ttl: 300,
+      proxied: false,
+      enabled: true,
+    };
+    expect((await request("POST", "/links", link)).status).toBe(201);
+    expect(cfRecords[0].content).toBe("192.0.2.44");
+    const v6 = await request("POST", "/links", {
+      ...link,
+      name: "lan6",
+      type: "AAAA",
+    });
+    expect(v6.status).toBe(201);
+    expect(cfRecords).toHaveLength(1);
+    const list = await request("GET", "/links");
+    const failed = (
+      list.body.links as Array<{ name: string; lastError: string }>
+    ).find((row) => row.name === "lan6");
+    expect(failed?.lastError).toMatch(/Could not resolve web.lan/);
+  });
+
   it("alerts when an update fails and says so once", async () => {
     await addAccount();
     await request("POST", "/links", {
@@ -510,7 +557,7 @@ describe("links", () => {
 describe("service for other plugins", () => {
   it("adds and removes a challenge record", async () => {
     await addAccount();
-    const dns = mock.ctx.services.get<{
+    const dns = await mock.ctx.services.get<{
       findZone: (name: string) => Promise<{ zoneName: string } | null>;
       setRecord: (input: object) => Promise<object>;
       removeRecord: (handle: object) => Promise<void>;

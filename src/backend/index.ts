@@ -36,7 +36,7 @@ export async function activate(ctx: PluginContext) {
     await service.runDaily().catch(logTo(ctx));
   };
   ctx.schedule.after(FIRST_RUN_MS, work);
-  ctx.schedule.every(TICK_MS, work, { jitterMs: 5_000 });
+  ctx.schedule.every(TICK_MS, work, { id: "work", jitterMs: 5_000 });
 }
 
 function logTo(ctx: PluginContext) {

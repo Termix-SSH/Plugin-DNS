@@ -1,6 +1,5 @@
 import { createHash } from "node:crypto";
-import { lookup as osLookup } from "node:dns/promises";
-import { isIPv4, isIPv6 } from "node:net";
+import { isIPv4, isIPv6 } from "./ip.js";
 import { and, desc, eq, inArray } from "drizzle-orm";
 import type { PluginContext } from "@termix-ssh/plugin-sdk/backend";
 import type {
@@ -1100,6 +1099,19 @@ export function createService(
     return ip;
   }
 
+  /** The plugin process can't use node:dns, so Termix looks the name up. */
+  async function lookupName(name: string, family: 4 | 6) {
+    // Drop this cast once the lock moves to SDK 2.2.2.
+    const network = ctx.network as typeof ctx.network & {
+      lookup?: (
+        host: string,
+        options?: { family?: 4 | 6 },
+      ) => Promise<string | null>;
+    };
+    if (typeof network.lookup !== "function") return null;
+    return network.lookup(name, { family }).catch(() => null);
+  }
+
   async function addressFor(row: LinkRow): Promise<string> {
     if (row.source === "public4") return publicAddress("A");
     if (row.source === "public6") return publicAddress("AAAA");
@@ -1112,11 +1124,9 @@ export function createService(
     if (isIPv4(host.ip) || isIPv6(host.ip)) {
       throw new Error(`The host address is ${wantV6 ? "IPv4" : "IPv6"}`);
     }
-    const found = await osLookup(host.ip, { family: wantV6 ? 6 : 4 }).catch(
-      () => null,
-    );
+    const found = await lookupName(host.ip, wantV6 ? 6 : 4);
     if (!found) throw new Error(`Could not resolve ${host.ip}`);
-    return found.address;
+    return found;
   }
 
   /** Points the record at the address, changing nothing when it already is. */
