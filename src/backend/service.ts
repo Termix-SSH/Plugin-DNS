@@ -1355,6 +1355,10 @@ export function createService(
   }
 
   return {
+    /** Accounts or enabled links the background work looks after. */
+    hasWork: async () =>
+      (await accountRows()).length > 0 ||
+      (await linkRows()).some((row) => row.enabled),
     accounts: async () => (await accountRows()).map(publicAccount),
     account: async (id: number) => publicAccount(await accountRow(id)),
     createAccount,
