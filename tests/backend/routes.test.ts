@@ -114,6 +114,8 @@ async function setup(permissions: string[]) {
     router: () => (routes = express.Router()),
     permissions,
     fetch: router as never,
+    resolve: (name, family) =>
+      name === "web.lan" && family === 4 ? "192.0.2.44" : null,
     hosts: [
       {
         id: 5,
@@ -138,11 +140,6 @@ async function setup(permissions: string[]) {
         authType: "password",
       },
     ],
-  });
-  // Drop this once the lock moves to SDK 2.2.2, which takes a resolve option.
-  Object.assign(mock.ctx.network, {
-    lookup: async (name: string, options?: { family?: 4 | 6 }) =>
-      name === "web.lan" && options?.family === 4 ? "192.0.2.44" : null,
   });
   await activate(mock.ctx);
 

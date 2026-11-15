@@ -1101,15 +1101,7 @@ export function createService(
 
   /** The plugin process can't use node:dns, so Termix looks the name up. */
   async function lookupName(name: string, family: 4 | 6) {
-    // Drop this cast once the lock moves to SDK 2.2.2.
-    const network = ctx.network as typeof ctx.network & {
-      lookup?: (
-        host: string,
-        options?: { family?: 4 | 6 },
-      ) => Promise<string | null>;
-    };
-    if (typeof network.lookup !== "function") return null;
-    return network.lookup(name, { family }).catch(() => null);
+    return ctx.network.lookup(name, { family }).catch(() => null);
   }
 
   async function addressFor(row: LinkRow): Promise<string> {
