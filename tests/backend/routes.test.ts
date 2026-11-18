@@ -106,6 +106,7 @@ async function setup(permissions: string[]) {
     .run("user-1", "user-1");
   let routes: Router | null = null;
   mock = createMockCtx({
+    sandbox: true,
     pluginId: manifest.id,
     manifest,
     capabilities: manifest.capabilities,
@@ -113,12 +114,25 @@ async function setup(permissions: string[]) {
     router: () => (routes = express.Router()),
     permissions,
     fetch: router as never,
+    resolve: (name, family) =>
+      name === "web.lan" && family === 4 ? "192.0.2.44" : null,
     hosts: [
       {
         id: 5,
         userId: "user-1",
         name: "web",
         ip: "198.51.100.5",
+        port: 22,
+        username: "root",
+        tags: null,
+        folder: null,
+        authType: "password",
+      },
+      {
+        id: 6,
+        userId: "user-1",
+        name: "lan",
+        ip: "web.lan",
         port: 22,
         username: "root",
         tags: null,
@@ -190,7 +204,7 @@ const addRecord = (extra: Record<string, unknown> = {}) =>
 describe("accounts", () => {
   it("lists the providers", async () => {
     const result = await request("GET", "/providers");
-    expect(result.body.providers).toHaveLength(8);
+    expect(result.body.providers).toHaveLength(9);
   });
 
   it("stores the keys sealed and never sends them back", async () => {
@@ -482,6 +496,36 @@ describe("links", () => {
     expect(dupe.status).toBe(409);
   });
 
+  it("looks up a host that has a name instead of an address", async () => {
+    await addAccount();
+    const link = {
+      accountId: 1,
+      zoneId: "z1",
+      zoneName: "example.com",
+      name: "lan",
+      type: "A",
+      source: "host",
+      hostId: 6,
+      ttl: 300,
+      proxied: false,
+      enabled: true,
+    };
+    expect((await request("POST", "/links", link)).status).toBe(201);
+    expect(cfRecords[0].content).toBe("192.0.2.44");
+    const v6 = await request("POST", "/links", {
+      ...link,
+      name: "lan6",
+      type: "AAAA",
+    });
+    expect(v6.status).toBe(201);
+    expect(cfRecords).toHaveLength(1);
+    const list = await request("GET", "/links");
+    const failed = (
+      list.body.links as Array<{ name: string; lastError: string }>
+    ).find((row) => row.name === "lan6");
+    expect(failed?.lastError).toMatch(/Could not resolve web.lan/);
+  });
+
   it("alerts when an update fails and says so once", async () => {
     await addAccount();
     await request("POST", "/links", {
@@ -510,7 +554,7 @@ describe("links", () => {
 describe("service for other plugins", () => {
   it("adds and removes a challenge record", async () => {
     await addAccount();
-    const dns = mock.ctx.services.get<{
+    const dns = await mock.ctx.services.get<{
       findZone: (name: string) => Promise<{ zoneName: string } | null>;
       setRecord: (input: object) => Promise<object>;
       removeRecord: (handle: object) => Promise<void>;

@@ -26,7 +26,7 @@ Read the [docs](https://docs.termix.site/plugins/dns) to set it up and use it.
 
 ## Features
 
-- Works with Cloudflare, Route 53, DigitalOcean, Hetzner, Namecheap, GoDaddy, Porkbun and Gandi
+- Works with Cloudflare, Route 53, DigitalOcean, Hetzner, Namecheap, GoDaddy, Porkbun, Gandi and Spaceship
 - Add, change and delete records for every provider in the same way
 - Domain list with expiry dates, auto renew, transfer lock and name servers, plus alerts before a domain expires
 - Watch any domain by name, even ones you did not register through a connected provider

@@ -16,7 +16,7 @@ const body = (call: { init: { body?: string } }) =>
   JSON.parse(call.init.body ?? "{}");
 
 describe("registry", () => {
-  it("lists eight providers with required fields", () => {
+  it("lists nine providers with required fields", () => {
     expect(providers.map((p) => p.id)).toEqual([
       "cloudflare",
       "route53",
@@ -26,6 +26,7 @@ describe("registry", () => {
       "godaddy",
       "porkbun",
       "gandi",
+      "spaceship",
     ]);
     for (const provider of providers) {
       expect(provider.fields.some((f) => f.required)).toBe(true);
